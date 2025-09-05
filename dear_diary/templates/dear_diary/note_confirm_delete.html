@@ -1,0 +1,22 @@
+{% extends 'dear_diary/base.html' %}
+{% block content %}
+<div class="row mb-2">
+    <div class="col-md-6">
+        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+            <div class="col p-4 d-flex flex-column position-static">
+                <p class="card-text">Действительно хотите удалить запись? - "{{ object.subject_note }}"</p>
+                <p class="card-text mb-2">{{ object.text_note }}</p>
+                {% csrf_token %}
+                {% if user.is_authenticated %}
+                <a class="btn btn-light">
+                    Удалить
+                </a>
+                <a href="{% url 'dear_diary:note_list' %}" class="btn btn-light">
+                    Назад
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
