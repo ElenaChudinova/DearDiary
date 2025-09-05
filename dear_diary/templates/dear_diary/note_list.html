@@ -1,0 +1,46 @@
+{% extends 'dear_diary/base.html' %}
+{% block content %}
+<div class="row mb-2">
+    {% for note in object_list %}
+    <div class="col-md-6">
+        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+            <div class="col p-4 d-flex flex-column position-static">
+                <strong class="d-inline-block mb-2 text-primary-emphasis">Анон</strong>
+                <h3 class="mb-2 ">{{ note.subject_note }}</h3>
+                <div class="mb-2 text-body-secondary">{{ note.date_publication }}</div>
+                <p class="card-text mb-2">{{ note.text_note|truncatechars:100}}</p>
+                <a class="btn btn-light" href="{% url 'dear_diary:note_detail' note.pk %}"
+                   role="button">Продолжить чтение</a>
+                {% if user.is_authenticated and
+                if perms.dear_diary.can_edit_subject_note and perms.dear_diary.can_edit_text_note or user ==
+                note.owner %}
+                    <a class="btn btn-light" href="{% url 'dear_diary:note_update' note.pk %}"
+                       role="button">Редактировать запись</a>
+                    <a class="btn btn-light" href="{% url 'dear_diary:note_delete' note.pk %}"
+                       role="button">Удалить запись</a>
+                {% endif %}
+                <p class="card-text mb-auto">просмотров {{ note.views_counter }}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">Первая</a>
+            <a href="?page={{ page_obj.previous_page_number }}">Предыдущая</a>
+        {% endif %}
+
+        <span class="current">
+            Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">Следующая</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">Последняя</a>
+        {% endif %}
+    </span>
+    </div>
+</div>
+{% include "dear_diary/pagination.html" with page=posts %}
+{% endblock %}
