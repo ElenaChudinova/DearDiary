@@ -11,9 +11,7 @@
                 <p class="card-text mb-2">{{ note.text_note|truncatechars:100}}</p>
                 <a class="btn btn-light" href="{% url 'dear_diary:note_detail' note.pk %}"
                    role="button">Продолжить чтение</a>
-                {% if user.is_authenticated and
-                if perms.dear_diary.can_edit_subject_note and perms.dear_diary.can_edit_text_note or user ==
-                note.owner %}
+                {% if user.is_authenticated and perms.dear_diary.can_edit_subject_note and perms.dear_diary.can_edit_text_note or user == note.owner %}
                     <a class="btn btn-light" href="{% url 'dear_diary:note_update' note.pk %}"
                        role="button">Редактировать запись</a>
                     <a class="btn btn-light" href="{% url 'dear_diary:note_delete' note.pk %}"
